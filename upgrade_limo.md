@@ -2,28 +2,53 @@
 
 Limo ROS1 버전을 ROS2로 업그레이드하는 방법을 소개합니다.
 
+- 준비물: sd카드 (64기가 권장)
 
-## [방법 1] 사전에 세팅된 이미지를 사용하기
+## [1] sd카드에 Image 굽기
+1. [**JetsonNano Ubuntu20.04 Image**](https://ln5.sync.com/dl/403a73c60/bqppm39m-mh4qippt-u5mhyyfi-nnma8c4t/view/default/14418794280004)를 다운받습니다.
+![alt text](images/image-1.png)
+1. [**Raspberry Pi Imager**](https://www.raspberrypi.com/software/)를 설치후 실행합니다.
+![alt text](images/image.png)
+1. Image를 sd카드에 굽습니다.
+    - 장치 선택 (CHOOSE DEVICE): 선택 안함
+    - 운영체제 선택 (CHOOSE OS): Use custom을 선택한 후 다운로드 받은 'JetsonNano Ubuntu20.04 Image'를 선택합니다.
+    - 저장소 선택: 준비한 sd카드를 선택합니다.
 
-1. [사전 세팅된 Image]()를 다운받습니다.
-1. [Raspberrypi Imager](https://www.raspberrypi.com/software/)를 사용하여 다운로드한 Image를 sd카드에 굽습니다.
-1. SD 카드 교체하기 (육각렌치로 분해)
-    ![alt text](images/sd카드교체.png)
+## [2] sd카드 교체
 
+위에서 구운 sd카드를 limo차량에 교체 삽입합니다.
 
-## [방법 2] 직접 이미지를 만들고 설치하기
-
-### 1.1. sd카드에 Image 굽기
-1. [JetsonNano Ubuntu20.04 Image](https://ln5.sync.com/dl/403a73c60/bqppm39m-mh4qippt-u5mhyyfi-nnma8c4t/view/default/14418794280004)를 다운받습니다.
-1. [Raspberrypi Imager](https://www.raspberrypi.com/software/)를 사용하여 다운로드한 Image를 sd카드에 굽습니다.
-
-
-### 1.2. 설치
-- ROS2 Foxy를 포함하여 필요한 패키지를 설치합니다.
-- [upgrade_limo (WeGo)](https://github.com/WeGo-Robotics/upgrade_limo)
+![](images/sd카드교체.png)
 
 
-### 1.3. Image 뜨기 (옵션)
 
-- 세팅이 완료된 sd카드를 [참고자료](https://blog.naver.com/todigital/222214247049)를 통해 이미지 파일로 생성합니다.
-- 이를 통해 같은 환경의 여러 sd카드를 생성하여 다양한 기기에 동일한 환경으로 접속할 수 있게 도와줍니다.
+## [3] 설치 및 환경구성
+
+limo 차량을 부팅한 후 아래 내용을 수행합니다.
+
+1. 인터넷 연결
+
+1. ROS2 Foxy 설치?
+
+1. 그래픽 드라이버?
+
+1. Ackermann Steering 세팅?
+
+1. 파티션 확장
+
+1. 패키지 설치
+
+
+1. Swap 메모리 확장
+    ```bash
+    # 원하는 크기 만큼 빈 파일 생성 (8G)
+    sudo fallocate -l 8G /swapfile
+    # 파일 권한 설정
+    sudo chmod 600 /swapfile
+    # 스왑 영역으로 포맷하기
+    sudo mkswap /swapfile
+    # 스왑 활성화하기
+    sudo swapon /swapfile
+    # 부팅 시 자동으로 스왑 켜기
+    grep -qxF '/swapfile none swap sw 0 0' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    ```
