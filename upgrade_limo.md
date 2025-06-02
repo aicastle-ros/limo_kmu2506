@@ -37,6 +37,7 @@ limo 차량을 부팅한 후 아래 내용을 수행합니다.
 1. 파티션 확장
 
 1. 패키지 설치
+    - [limo_ros2](https://github.com/aicastle-ros/limo_ros2)
 
 
 1. Swap 메모리 확장
